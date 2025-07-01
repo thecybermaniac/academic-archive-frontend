@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -66,7 +65,10 @@ const UploadModal = ({ onClose, onUpload }: UploadModalProps) => {
     await new Promise(resolve => setTimeout(resolve, 2000));
 
     const pdfData: PDF = {
-      ...formData,
+      title: formData.title,
+      author: formData.author,
+      type: formData.type as 'research' | 'textbook',
+      department: formData.department,
       fileName: selectedFile.name
     };
 
