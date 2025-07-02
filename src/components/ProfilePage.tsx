@@ -1,9 +1,11 @@
 
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { User, Mail, Phone, MapPin, Calendar, BookOpen, FileText } from 'lucide-react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { User, Mail, Phone, MapPin, Calendar, BookOpen, FileText, Camera, Upload } from 'lucide-react';
 
 interface ProfilePageProps {
   userId: string;
@@ -11,6 +13,19 @@ interface ProfilePageProps {
 }
 
 const ProfilePage = ({ userId, totalUploads }: ProfilePageProps) => {
+  const [profileImage, setProfileImage] = useState<string | null>(null);
+
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setProfileImage(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-8">
@@ -27,11 +42,49 @@ const ProfilePage = ({ userId, totalUploads }: ProfilePageProps) => {
         <div className="md:col-span-1">
           <Card>
             <CardHeader className="text-center">
-              <div className="mx-auto bg-blue-100 dark:bg-blue-900 p-6 rounded-full w-24 h-24 flex items-center justify-center mb-4">
-                <User className="h-12 w-12 text-blue-600 dark:text-blue-400" />
+              <div className="mx-auto mb-4 relative">
+                <Avatar className="w-24 h-24">
+                  <AvatarImage src={profileImage || undefined} alt="Profile picture" />
+                  <AvatarFallback className="bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400 text-2xl">
+                    <User className="h-12 w-12" />
+                  </AvatarFallback>
+                </Avatar>
+                <div className="absolute -bottom-2 -right-2">
+                  <label htmlFor="profile-upload" className="cursor-pointer">
+                    <div className="bg-blue-600 hover:bg-blue-700 p-2 rounded-full text-white shadow-lg transition-colors">
+                      <Camera className="h-4 w-4" />
+                    </div>
+                    <input
+                      id="profile-upload"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      className="hidden"
+                    />
+                  </label>
+                </div>
               </div>
               <CardTitle className="text-xl">Student {userId}</CardTitle>
               <CardDescription>University Library Member</CardDescription>
+              {!profileImage && (
+                <div className="mt-4">
+                  <label htmlFor="profile-upload-alt" className="cursor-pointer">
+                    <Button variant="outline" size="sm" className="gap-2" asChild>
+                      <span>
+                        <Upload className="h-4 w-4" />
+                        Upload Photo
+                      </span>
+                    </Button>
+                    <input
+                      id="profile-upload-alt"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      className="hidden"
+                    />
+                  </label>
+                </div>
+              )}
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
