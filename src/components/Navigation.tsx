@@ -1,11 +1,12 @@
 
 import { Button } from '@/components/ui/button';
-import { BookOpen, Home, Library, Upload, LogOut } from 'lucide-react';
+import { BookOpen, Home, Library, LogOut, User } from 'lucide-react';
+import ThemeToggle from './ThemeToggle';
 
 interface NavigationProps {
   userId: string;
-  currentPage: 'dashboard' | 'library' | 'upload';
-  onNavigate: (page: 'dashboard' | 'library' | 'upload') => void;
+  currentPage: 'dashboard' | 'library' | 'upload' | 'profile';
+  onNavigate: (page: 'dashboard' | 'library' | 'upload' | 'profile') => void;
   onLogout: () => void;
 }
 
@@ -13,10 +14,11 @@ const Navigation = ({ userId, currentPage, onNavigate, onLogout }: NavigationPro
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: Home },
     { id: 'library', label: 'Library', icon: Library },
+    { id: 'profile', label: 'Profile', icon: User },
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 z-50">
+    <nav className="fixed top-0 left-0 right-0 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
@@ -25,8 +27,8 @@ const Navigation = ({ userId, currentPage, onNavigate, onLogout }: NavigationPro
                 <BookOpen className="h-5 w-5 text-white" />
               </div>
               <div>
-                <h1 className="text-lg font-semibold text-gray-900">University Library</h1>
-                <p className="text-xs text-gray-500">ID: {userId}</p>
+                <h1 className="text-lg font-semibold text-gray-900 dark:text-gray-100">University Library</h1>
+                <p className="text-xs text-gray-500 dark:text-gray-400">ID: {userId}</p>
               </div>
             </div>
           </div>
@@ -49,6 +51,7 @@ const Navigation = ({ userId, currentPage, onNavigate, onLogout }: NavigationPro
           </div>
 
           <div className="flex items-center gap-2">
+            <ThemeToggle />
             <Button
               variant="outline"
               size="sm"
@@ -62,7 +65,7 @@ const Navigation = ({ userId, currentPage, onNavigate, onLogout }: NavigationPro
         </div>
 
         {/* Mobile Navigation */}
-        <div className="md:hidden border-t border-gray-200 py-2">
+        <div className="md:hidden border-t border-gray-200 dark:border-gray-700 py-2">
           <div className="flex justify-around">
             {navItems.map((item) => {
               const Icon = item.icon;

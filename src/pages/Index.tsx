@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import LoginPage from '../components/LoginPage';
 import Dashboard from '../components/Dashboard';
 import LibraryPage from '../components/LibraryPage';
+import ProfilePage from '../components/ProfilePage';
 import UploadModal from '../components/UploadModal';
 import Navigation from '../components/Navigation';
 
@@ -19,7 +20,7 @@ interface PDF {
 const Index = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState('');
-  const [currentPage, setCurrentPage] = useState<'dashboard' | 'library' | 'upload'>('dashboard');
+  const [currentPage, setCurrentPage] = useState<'dashboard' | 'library' | 'upload' | 'profile'>('dashboard');
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   const [pdfs, setPdfs] = useState<PDF[]>([
     {
@@ -87,7 +88,7 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Navigation 
         userId={userId} 
         currentPage={currentPage}
@@ -107,6 +108,13 @@ const Index = () => {
         
         {currentPage === 'library' && (
           <LibraryPage pdfs={pdfs} />
+        )}
+
+        {currentPage === 'profile' && (
+          <ProfilePage 
+            userId={userId}
+            totalUploads={pdfs.length}
+          />
         )}
       </main>
 
